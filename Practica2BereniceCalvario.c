@@ -57,8 +57,10 @@ int main(int argc, char *argv[])
         for (int i = 0; i < size; i++)
         {
             if (i != 0)
+            {
                 // Enviamos el nuevo tiempo "correcto" a tdos los nodos esclavos.
                 MPI_Send(&promedio, 1, MPI_INT, i, 0, MPI_COMM_WORLD);
+            }
         }
 
         // Cantidad que se le tuvo que sumar al nodo maestro para tener el nuevo tiempo "correcto".
