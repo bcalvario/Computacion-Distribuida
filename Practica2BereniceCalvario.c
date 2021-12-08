@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     // Número del proceso.
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    // Total de procesos de comunicador.
+    // Total de procesos.
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
     time_t sec;
@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
                 MPI_Send(&promedio, 1, MPI_INT, i, 0, MPI_COMM_WORLD);
         }
 
+        // Cantidad que se le tuvo que sumar al nodo maestro para tener el nuevo tiempo "correcto".
         int ajuste_realizado = promedio - sec;
         printf("-Tiempo correcto en el nodo-%d-maestro: %i, ajuste: %i\n", rank, promedio, ajuste_realizado);
     }
@@ -76,7 +77,7 @@ int main(int argc, char *argv[])
         // Recibimos el nuevo tiempo "correcto" del nodos maestro.
         MPI_Recv(&tiempo_correcto, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
 
-        // Cantidad que se le tuvo que sumar a cada nodo para tener el nuevo tiempo "correcto".
+        // Cantidad que se le tuvo que sumar a cada nodo esclavo para tener el nuevo tiempo "correcto".
         int ajuste_realizado = tiempo_correcto - sec;
         printf("-Tiempo correcto en el nodo-%d-esclavo: %i, ajuste sumado: %i\n", rank, tiempo_correcto, ajuste_realizado);
     }
